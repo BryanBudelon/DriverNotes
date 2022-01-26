@@ -53,11 +53,13 @@ class _MyAppState extends State<MyApp> {
                 minLines: 10,
                 maxLines: 10,
                 controller: textController,
+                onSubmitted: (_) =>
+                    insertText(textController.text, textController),
               ),
               Row(
                 children: [
                   ElevatedButton(
-                      onPressed: () => insertText('Drop 1', textController),
+                      onPressed: () => insertText('Drop \n', textController),
                       child: Text('Add Drop')),
                   IconButton(onPressed: () {}, icon: Icon(Icons.copy)),
                 ],
