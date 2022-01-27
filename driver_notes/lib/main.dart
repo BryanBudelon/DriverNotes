@@ -4,10 +4,12 @@
 
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -32,6 +34,54 @@ class _MyAppState extends State<MyApp> {
             .replaceRange(max(cursorPos, 0), max(cursorPos, 0), insert),
         selection: TextSelection.fromPosition(
             TextPosition(offset: max(cursorPos, 0) + insert.length)));
+  }
+
+  void showModalOptions(BuildContext ctx) {
+    /*showModalBottomSheet(
+        context: ctx,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            child: Card(
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+                ),
+                child: Column(
+                  children: [],
+                ),
+              ),
+            ),
+          );
+        });
+        */
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(children: [
+                  GestureDetector(
+                    child: Text('No parking spot nearby'),
+                    onTap: () {
+                      setState(() {
+                        insertText('\nNo parking spot nearby', textController);
+                      });
+                    },
+                  )
+                ]),
+                color: Colors.teal[100],
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -59,9 +109,15 @@ class _MyAppState extends State<MyApp> {
               Row(
                 children: [
                   ElevatedButton(
-                      onPressed: () => insertText('Drop \n', textController),
+                      //onPressed: () => insertText('Drop \n', textController),
+                      onPressed: () => showModalOptions(context),
                       child: Text('Add Drop')),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.copy)),
+                  IconButton(
+                      onPressed: () {
+                        Clipboard.setData(
+                            ClipboardData(text: textController.text));
+                      },
+                      icon: Icon(Icons.copy)),
                 ],
               ),
             ],
