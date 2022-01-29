@@ -25,6 +25,7 @@ class _MyAppState extends State<MyApp> {
   final finishTime = TextEditingController();
   final textController = TextEditingController();
   final dropController = TextEditingController();
+  // final List<TextEditingController> test1 = [];
   String dropNumber = '';
 
   void insertText(String insert, TextEditingController controller) {
@@ -184,78 +185,92 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Driver Notes'),
-        ),
-        body: Column(
-          children: [
-            Row(children: [
-              Container(
-                child: SizedBox(
-                  width: 150,
-                  child: TextField(
-                    decoration: InputDecoration(labelText: 'Starting Date'),
-                    controller: startDate,
-                    onTap: _startDatePicker,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 150,
-                child: TextField(
-                  decoration: InputDecoration(labelText: 'Starting Time'),
-                  controller: startTime,
-                  onTap: _startTimePicker,
-                ),
-              ),
-            ]),
-            Row(children: [
-              SizedBox(
-                width: 150,
-                child: TextField(
-                  decoration: InputDecoration(labelText: 'Finising Date'),
-                  controller: finishDate,
-                  onTap: _finishDatePicker,
-                ),
-              ),
-              SizedBox(
-                width: 150,
-                child: TextField(
-                  decoration: InputDecoration(labelText: 'Finising Time'),
-                  controller: finishTime,
-                  onTap: _finishTimePicker,
-                ),
-              ),
-            ]),
-            TextField(
-              decoration: InputDecoration(labelText: 'Drop Number'),
-              keyboardType: TextInputType.number,
-              controller: dropController,
-            ),
-            TextField(
-              minLines: 10,
-              maxLines: 10,
-              controller: textController,
-              onSubmitted: (_) =>
-                  insertText(textController.text, textController),
-            ),
-            Row(
-              children: [
-                ElevatedButton(
-                    //onPressed: () => insertText('Drop \n', textController),
-                    onPressed: () => showModalOptions(context),
-                    child: Text('Add Drop')),
-                IconButton(
-                    onPressed: () {
-                      _copyData();
-                      /*Clipboard.setData(
-                          ClipboardData(text: textController.text)); */
-                    },
-                    icon: Icon(Icons.copy)),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Driver Notes'),
+            bottom: TabBar(
+              tabs: [
+                Icon(Icons.notes),
+                Icon(Icons.ac_unit),
               ],
             ),
-          ],
+          ),
+          body: TabBarView(children: [
+            Column(
+              children: [
+                Row(children: [
+                  Container(
+                    child: SizedBox(
+                      width: 150,
+                      child: TextField(
+                        decoration: InputDecoration(labelText: 'Starting Date'),
+                        controller: startDate,
+                        onTap: _startDatePicker,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Starting Time'),
+                      controller: startTime,
+                      onTap: _startTimePicker,
+                    ),
+                  ),
+                ]),
+                Row(children: [
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Finising Date'),
+                      controller: finishDate,
+                      onTap: _finishDatePicker,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Finising Time'),
+                      controller: finishTime,
+                      onTap: _finishTimePicker,
+                    ),
+                  ),
+                ]),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Drop Number'),
+                  keyboardType: TextInputType.number,
+                  controller: dropController,
+                ),
+                TextField(
+                  minLines: 10,
+                  maxLines: 10,
+                  controller: textController,
+                  onSubmitted: (_) =>
+                      insertText(textController.text, textController),
+                ),
+                Row(
+                  children: [
+                    ElevatedButton(
+                        //onPressed: () => insertText('Drop \n', textController),
+                        onPressed: () => showModalOptions(context),
+                        child: Text('Add Drop')),
+                    IconButton(
+                        onPressed: () {
+                          _copyData();
+                          /*Clipboard.setData(
+                              ClipboardData(text: textController.text)); */
+                        },
+                        icon: Icon(Icons.copy)),
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              children: [Text('Test')],
+            )
+          ]),
         ),
       ),
     );
