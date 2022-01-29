@@ -5,6 +5,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -18,6 +19,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final startDate = TextEditingController();
+  final startTime = TextEditingController();
+  final finishDate = TextEditingController();
+  final finishTime = TextEditingController();
   final textController = TextEditingController();
   final dropController = TextEditingController();
   String dropNumber = '';
@@ -29,6 +34,14 @@ class _MyAppState extends State<MyApp> {
             .replaceRange(max(cursorPos, 0), max(cursorPos, 0), insert),
         selection: TextSelection.fromPosition(
             TextPosition(offset: max(cursorPos, 0) + insert.length)));
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    startDate.dispose();
+    super.dispose();
   }
 
   void showModalOptions(BuildContext ctx) {
@@ -46,12 +59,15 @@ class _MyAppState extends State<MyApp> {
                   child: GestureDetector(
                     child: Text('No parking spot nearby'),
                     onTap: () {
-                      setState(() {
-                        dropNumber = dropController.text;
-                        insertText(
-                            '\nDrop $dropNumber \nNo parking spot nearby',
-                            textController);
-                      });
+                      setState(
+                        () {
+                          dropNumber = dropController.text;
+                          insertText(
+                              '\nDrop $dropNumber \nNo parking spot nearby',
+                              textController);
+                          Navigator.of(ctx).pop();
+                        },
+                      );
                     },
                   ),
                   color: Colors.teal[100],
@@ -61,9 +77,15 @@ class _MyAppState extends State<MyApp> {
                   child: GestureDetector(
                     child: Text('Customer\'s unit on level 2'),
                     onTap: () {
-                      setState(() {
-                        insertText('\nNo parking spot nearby', textController);
-                      });
+                      setState(
+                        () {
+                          dropNumber = dropController.text;
+                          insertText(
+                              '\nDrop $dropNumber \nCustomer\'s unit on level 2',
+                              textController);
+                          Navigator.of(ctx).pop();
+                        },
+                      );
                     },
                   ),
                   color: Colors.teal[100],
@@ -74,49 +96,168 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
+  void _startDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        print('Entrou no if');
+        return;
+      }
+      setState(() {
+        startDate.text = DateFormat('dd/MM/yy').format(pickedDate);
+        print('Start Date:' + startDate.text);
+      });
+    });
+  }
+
+  void _finishDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        print('Entrou no if');
+        return;
+      }
+      setState(() {
+        finishDate.text = DateFormat('dd/MM/yy').format(pickedDate);
+        print('Start Date:' + startDate.text);
+      });
+    });
+  }
+
+  void _startTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime:
+          TimeOfDay(hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute),
+    ).then((pickedTime) {
+      if (pickedTime == null) {
+        return;
+      }
+      setState(() {
+        startTime.text = pickedTime.format(context);
+        print('Start Time:' + startTime.text);
+      });
+    });
+  }
+
+  void _finishTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime:
+          TimeOfDay(hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute),
+    ).then((pickedTime) {
+      if (pickedTime == null) {
+        return;
+      }
+      setState(() {
+        finishTime.text = pickedTime.format(context);
+        print('Start Time:' + startTime.text);
+      });
+    });
+  }
+
+  void _copyData() {
+    String result = '';
+    result = 'Starting Date: ' +
+        startDate.text +
+        ' - Time: ' +
+        startTime.text +
+        '\nFinishing Date: ' +
+        finishDate.text +
+        ' - Time: ' +
+        finishTime.text +
+        '\n' +
+        textController.text;
+    Clipboard.setData(
+      ClipboardData(text: result),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Driver Notes'),
-          ),
-          body: Column(
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Insert Starting Time'),
+        appBar: AppBar(
+          title: Text('Driver Notes'),
+        ),
+        body: Column(
+          children: [
+            Row(children: [
+              Container(
+                child: SizedBox(
+                  width: 150,
+                  child: TextField(
+                    decoration: InputDecoration(labelText: 'Starting Date'),
+                    controller: startDate,
+                    onTap: _startDatePicker,
+                  ),
+                ),
               ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Insert Finishing Time'),
+              SizedBox(
+                width: 150,
+                child: TextField(
+                  decoration: InputDecoration(labelText: 'Starting Time'),
+                  controller: startTime,
+                  onTap: _startTimePicker,
+                ),
               ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Drop Number'),
-                keyboardType: TextInputType.number,
-                controller: dropController,
+            ]),
+            Row(children: [
+              SizedBox(
+                width: 150,
+                child: TextField(
+                  decoration: InputDecoration(labelText: 'Finising Date'),
+                  controller: finishDate,
+                  onTap: _finishDatePicker,
+                ),
               ),
-              TextField(
-                minLines: 10,
-                maxLines: 10,
-                controller: textController,
-                onSubmitted: (_) =>
-                    insertText(textController.text, textController),
+              SizedBox(
+                width: 150,
+                child: TextField(
+                  decoration: InputDecoration(labelText: 'Finising Time'),
+                  controller: finishTime,
+                  onTap: _finishTimePicker,
+                ),
               ),
-              Row(
-                children: [
-                  ElevatedButton(
-                      //onPressed: () => insertText('Drop \n', textController),
-                      onPressed: () => showModalOptions(context),
-                      child: Text('Add Drop')),
-                  IconButton(
-                      onPressed: () {
-                        Clipboard.setData(
-                            ClipboardData(text: textController.text));
-                      },
-                      icon: Icon(Icons.copy)),
-                ],
-              ),
-            ],
-          )),
+            ]),
+            TextField(
+              decoration: InputDecoration(labelText: 'Drop Number'),
+              keyboardType: TextInputType.number,
+              controller: dropController,
+            ),
+            TextField(
+              minLines: 10,
+              maxLines: 10,
+              controller: textController,
+              onSubmitted: (_) =>
+                  insertText(textController.text, textController),
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                    //onPressed: () => insertText('Drop \n', textController),
+                    onPressed: () => showModalOptions(context),
+                    child: Text('Add Drop')),
+                IconButton(
+                    onPressed: () {
+                      _copyData();
+                      /*Clipboard.setData(
+                          ClipboardData(text: textController.text)); */
+                    },
+                    icon: Icon(Icons.copy)),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
