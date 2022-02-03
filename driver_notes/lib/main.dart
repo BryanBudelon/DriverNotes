@@ -233,24 +233,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget listingReasons() {
-    return Container(
-        alignment: Alignment.center,
-        child: GestureDetector(
-          child: Text(''),
-          onTap: () {
-            setState(
-              () {
-                dropNumber = dropController.text;
-                insertText('\nDrop $dropNumber \nNo parking spot nearby',
-                    textController);
-              },
-            );
-          },
-        ),
-        color: Colors.teal[100]);
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -313,20 +295,17 @@ class _MyAppState extends State<MyApp> {
                   keyboardType: TextInputType.number,
                   controller: dropController,
                 ),
-                ElevatedButton(
-                  //onPressed: () => insertText('Drop \n', textController),
-                  onPressed: () => showModalOptions(context),
-                  child: Text('Add Drop'),
-                ),
                 Container(
+                  margin: EdgeInsets.all(10),
                   width: 300,
                   height: 300,
                   child: GridView.count(
-                    crossAxisCount: 3,
+                    crossAxisCount: 1,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 10,
                     children: [
-                      Container(
+                      ReasonSelection(),
+                      /*Container(
                         alignment: Alignment.center,
                         child: GestureDetector(
                           child: Text('No parking spot nearby'),
@@ -376,10 +355,15 @@ class _MyAppState extends State<MyApp> {
                           },
                         ),
                         color: Colors.teal[100],
-                      ),
+                      ), */
                     ],
                   ),
-                )
+                ),
+                ElevatedButton(
+                  //onPressed: () => insertText('Drop \n', textController),
+                  onPressed: () => showModalOptions(context),
+                  child: Text('Add Drop'),
+                ),
               ],
             ),
             // Result Tab
