@@ -362,9 +362,9 @@ class _MyAppState extends State<MyApp> {
                     onSubmitted: (_) =>
                         insertText(textController.text, textController),
                   ),
-                ),
-              ],
-            )
+                ],
+              ),
+            ),
           ]),
         ),
       ),
