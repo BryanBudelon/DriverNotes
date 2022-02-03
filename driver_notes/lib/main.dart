@@ -243,32 +243,41 @@ class _MyAppState extends State<MyApp> {
                   keyboardType: TextInputType.number,
                   controller: dropController,
                 ),
-                TextField(
-                  minLines: 10,
-                  maxLines: 10,
-                  controller: textController,
-                  onSubmitted: (_) =>
-                      insertText(textController.text, textController),
-                ),
                 Row(
                   children: [
                     ElevatedButton(
                         //onPressed: () => insertText('Drop \n', textController),
                         onPressed: () => showModalOptions(context),
                         child: Text('Add Drop')),
-                    IconButton(
-                        onPressed: () {
-                          _copyData();
-                          /*Clipboard.setData(
-                              ClipboardData(text: textController.text)); */
-                        },
-                        icon: Icon(Icons.copy)),
                   ],
                 ),
               ],
             ),
-            Column(
-              children: [Text('Test')],
+            Container(
+              padding: EdgeInsets.only(top: 20),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Colors.blue),
+                      borderRadius: BorderRadius.circular(15),
+                    )),
+                    minLines: 10,
+                    maxLines: 10,
+                    controller: textController,
+                    onSubmitted: (_) =>
+                        insertText(textController.text, textController),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        _copyData();
+                        /*Clipboard.setData(
+                              ClipboardData(text: textController.text)); */
+                      },
+                      icon: Icon(Icons.copy)),
+                ],
+              ),
             )
           ]),
         ),
