@@ -97,6 +97,48 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
+  void reasonsList() {
+    GridView.count(
+      crossAxisCount: 2,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      children: [
+        Container(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            child: Text('No parking spot nearby'),
+            onTap: () {
+              setState(
+                () {
+                  dropNumber = dropController.text;
+                  insertText('\nDrop $dropNumber \nNo parking spot nearby',
+                      textController);
+                },
+              );
+            },
+          ),
+          color: Colors.teal[100],
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            child: Text('Customer\'s unit on level 2'),
+            onTap: () {
+              setState(
+                () {
+                  dropNumber = dropController.text;
+                  insertText('\nDrop $dropNumber \nCustomer\'s unit on level 2',
+                      textController);
+                },
+              );
+            },
+          ),
+          color: Colors.teal[100],
+        ),
+      ],
+    );
+  }
+
   void _startDatePicker() {
     showDatePicker(
       context: context,
@@ -198,6 +240,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           body: TabBarView(children: [
+            // Action Tab
             Column(
               children: [
                 Row(children: [
@@ -243,16 +286,57 @@ class _MyAppState extends State<MyApp> {
                   keyboardType: TextInputType.number,
                   controller: dropController,
                 ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                        //onPressed: () => insertText('Drop \n', textController),
-                        onPressed: () => showModalOptions(context),
-                        child: Text('Add Drop')),
-                  ],
+                ElevatedButton(
+                  //onPressed: () => insertText('Drop \n', textController),
+                  onPressed: () => showModalOptions(context),
+                  child: Text('Add Drop'),
                 ),
+                Container(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          child: Text('No parking spot nearby'),
+                          onTap: () {
+                            setState(
+                              () {
+                                dropNumber = dropController.text;
+                                insertText(
+                                    '\nDrop $dropNumber \nNo parking spot nearby',
+                                    textController);
+                              },
+                            );
+                          },
+                        ),
+                        color: Colors.teal[100],
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          child: Text('Customer\'s unit on level 2'),
+                          onTap: () {
+                            setState(
+                              () {
+                                dropNumber = dropController.text;
+                                insertText(
+                                    '\nDrop $dropNumber \nCustomer\'s unit on level 2',
+                                    textController);
+                              },
+                            );
+                          },
+                        ),
+                        color: Colors.teal[100],
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
+            // Result Tab
             Container(
               padding: EdgeInsets.only(top: 20),
               child: Column(
