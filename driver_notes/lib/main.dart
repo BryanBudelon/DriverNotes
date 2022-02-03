@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'reason_selection.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -27,6 +28,12 @@ class _MyAppState extends State<MyApp> {
   final dropController = TextEditingController();
   // final List<TextEditingController> test1 = [];
   String dropNumber = '';
+  int selectedCard = -1;
+
+  final List<String> reasons = [
+    'No parking spot neaby',
+    'Customer\'s unit on level 1'
+  ];
 
   void insertText(String insert, TextEditingController controller) {
     final int cursorPos = controller.selection.base.offset;
@@ -58,7 +65,7 @@ class _MyAppState extends State<MyApp> {
                 Container(
                   alignment: Alignment.center,
                   child: GestureDetector(
-                    child: Text('No parking spot nearby'),
+                    child: Text(reasons[0]),
                     onTap: () {
                       setState(
                         () {
@@ -76,7 +83,7 @@ class _MyAppState extends State<MyApp> {
                 Container(
                   alignment: Alignment.center,
                   child: GestureDetector(
-                    child: Text('Customer\'s unit on level 2'),
+                    child: Text(reasons[1]),
                     onTap: () {
                       setState(
                         () {
@@ -219,6 +226,8 @@ class _MyAppState extends State<MyApp> {
         finishTime.text +
         '\n' +
         textController.text;
+
+    print(result);
     Clipboard.setData(
       ClipboardData(text: result),
     );
@@ -353,15 +362,8 @@ class _MyAppState extends State<MyApp> {
                     onSubmitted: (_) =>
                         insertText(textController.text, textController),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        _copyData();
-                        /*Clipboard.setData(
-                              ClipboardData(text: textController.text)); */
-                      },
-                      icon: Icon(Icons.copy)),
-                ],
-              ),
+                ),
+              ],
             )
           ]),
         ),
