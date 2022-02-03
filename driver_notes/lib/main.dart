@@ -252,26 +252,12 @@ class _MyAppState extends State<MyApp> {
                   keyboardType: TextInputType.number,
                   controller: dropController,
                 ),
-                TextField(
-                  minLines: 10,
-                  maxLines: 10,
-                  controller: textController,
-                  onSubmitted: (_) =>
-                      insertText(textController.text, textController),
-                ),
                 Row(
                   children: [
                     ElevatedButton(
                         //onPressed: () => insertText('Drop \n', textController),
                         onPressed: () => showModalOptions(context),
                         child: Text('Add Drop')),
-                    IconButton(
-                        onPressed: () {
-                          _copyData();
-                          /*Clipboard.setData(
-                              ClipboardData(text: textController.text)); */
-                        },
-                        icon: Icon(Icons.copy)),
                   ],
                 ),
               ],
