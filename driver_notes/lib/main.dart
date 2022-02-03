@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   String dropNumber = '';
   int selectedCard = -1;
 
-  final List<String> reasons = [
+  List<String> reasons = [
     'No parking spot neaby',
     'Customer\'s unit on level 1'
   ];
@@ -233,6 +233,24 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  Widget listingReasons() {
+    return Container(
+        alignment: Alignment.center,
+        child: GestureDetector(
+          child: Text(''),
+          onTap: () {
+            setState(
+              () {
+                dropNumber = dropController.text;
+                insertText('\nDrop $dropNumber \nNo parking spot nearby',
+                    textController);
+              },
+            );
+          },
+        ),
+        color: Colors.teal[100]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -301,9 +319,11 @@ class _MyAppState extends State<MyApp> {
                   child: Text('Add Drop'),
                 ),
                 Container(
+                  width: 300,
+                  height: 300,
                   child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 5,
                     mainAxisSpacing: 10,
                     children: [
                       Container(
@@ -316,6 +336,23 @@ class _MyAppState extends State<MyApp> {
                                 dropNumber = dropController.text;
                                 insertText(
                                     '\nDrop $dropNumber \nNo parking spot nearby',
+                                    textController);
+                              },
+                            );
+                          },
+                        ),
+                        color: Colors.teal[100],
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          child: Text('Customer\'s unit on level 2'),
+                          onTap: () {
+                            setState(
+                              () {
+                                dropNumber = dropController.text;
+                                insertText(
+                                    '\nDrop $dropNumber \nCustomer\'s unit on level 2',
                                     textController);
                               },
                             );
