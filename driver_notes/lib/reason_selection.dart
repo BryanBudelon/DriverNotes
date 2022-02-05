@@ -9,13 +9,21 @@ class ReasonSelection extends StatefulWidget {
 
 class _ReasonSelectionState extends State<ReasonSelection> {
   int selectedCard = -1;
+  List<String> reasons = [
+    'No parking spot neaby',
+    'Customer\'s unit on level 1',
+    'Customer\'s unit on level 2',
+    'Customer\'s unit on level 3',
+    'Customer\'s unit on level 4',
+    'Customer\'s unit on level 5',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
         shrinkWrap: false,
         scrollDirection: Axis.vertical,
-        itemCount: 10,
+        itemCount: 6,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: MediaQuery.of(context).size.width /
@@ -37,7 +45,7 @@ class _ReasonSelectionState extends State<ReasonSelection> {
                 width: 200,
                 child: Center(
                   child: Text(
-                    '$index',
+                    reasons[index],
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,

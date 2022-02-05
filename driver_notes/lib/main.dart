@@ -300,11 +300,12 @@ class _MyAppState extends State<MyApp> {
                   width: 300,
                   height: 300,
                   child: GridView.count(
-                    crossAxisCount: 3,
+                    crossAxisCount: 1,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 10,
                     children: [
-                      Container(
+                      ReasonSelection(),
+                      /*Container(
                         alignment: Alignment.center,
                         child: GestureDetector(
                           child: Text('No parking spot nearby'),
@@ -354,7 +355,7 @@ class _MyAppState extends State<MyApp> {
                           },
                         ),
                         color: Colors.teal[100],
-                      ),
+                      ), */
                     ],
                   ),
                 ) */
