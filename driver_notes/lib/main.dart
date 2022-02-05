@@ -2,10 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:math';
+import 'package:driver_notes/notes_tab.dart';
+import 'package:driver_notes/selectable_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'insert_text.dart';
 import 'reason_selection.dart';
 
 void main() {
@@ -35,18 +37,9 @@ class _MyAppState extends State<MyApp> {
     'Customer\'s unit on level 1'
   ];
 
-  void insertText(String insert, TextEditingController controller) {
-    final int cursorPos = controller.selection.base.offset;
-    controller.value = controller.value.copyWith(
-        text: controller.text
-            .replaceRange(max(cursorPos, 0), max(cursorPos, 0), insert),
-        selection: TextSelection.fromPosition(
-            TextPosition(offset: max(cursorPos, 0) + insert.length)));
-  }
-
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
+    //Clean up the controller when the widget is removed from the widget tree.
     // This also removes the _printLatestValue listener.
     startDate.dispose();
     super.dispose();
@@ -70,7 +63,7 @@ class _MyAppState extends State<MyApp> {
                       setState(
                         () {
                           dropNumber = dropController.text;
-                          insertText(
+                          InsertText().insertText(
                               '\nDrop $dropNumber \nNo parking spot nearby',
                               textController);
                           Navigator.of(ctx).pop();
@@ -88,7 +81,7 @@ class _MyAppState extends State<MyApp> {
                       setState(
                         () {
                           dropNumber = dropController.text;
-                          insertText(
+                          InsertText().insertText(
                               '\nDrop $dropNumber \nCustomer\'s unit on level 2',
                               textController);
                           Navigator.of(ctx).pop();
@@ -118,7 +111,8 @@ class _MyAppState extends State<MyApp> {
               setState(
                 () {
                   dropNumber = dropController.text;
-                  insertText('\nDrop $dropNumber \nNo parking spot nearby',
+                  InsertText().insertText(
+                      '\nDrop $dropNumber \nNo parking spot nearby',
                       textController);
                 },
               );
@@ -134,7 +128,8 @@ class _MyAppState extends State<MyApp> {
               setState(
                 () {
                   dropNumber = dropController.text;
-                  insertText('\nDrop $dropNumber \nCustomer\'s unit on level 2',
+                  InsertText().insertText(
+                      '\nDrop $dropNumber \nCustomer\'s unit on level 2',
                       textController);
                 },
               );
@@ -214,25 +209,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _copyData() {
-    String result = '';
-    result = 'Starting Date: ' +
-        startDate.text +
-        ' - Time: ' +
-        startTime.text +
-        '\nFinishing Date: ' +
-        finishDate.text +
-        ' - Time: ' +
-        finishTime.text +
-        '\n' +
-        textController.text;
-
-    print(result);
-    Clipboard.setData(
-      ClipboardData(text: result),
-    );
-  }
-
   Widget listingReasons() {
     return Container(
         alignment: Alignment.center,
@@ -242,7 +218,8 @@ class _MyAppState extends State<MyApp> {
             setState(
               () {
                 dropNumber = dropController.text;
-                insertText('\nDrop $dropNumber \nNo parking spot nearby',
+                InsertText().insertText(
+                    '\nDrop $dropNumber \nNo parking spot nearby',
                     textController);
               },
             );
@@ -318,7 +295,8 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () => showModalOptions(context),
                   child: Text('Add Drop'),
                 ),
-                Container(
+                Container(child: SelectableGrid(), width: 200, height: 200),
+                /*Container(
                   width: 300,
                   height: 300,
                   child: GridView.count(
@@ -334,7 +312,7 @@ class _MyAppState extends State<MyApp> {
                             setState(
                               () {
                                 dropNumber = dropController.text;
-                                insertText(
+                                InsertText().insertText(
                                     '\nDrop $dropNumber \nNo parking spot nearby',
                                     textController);
                               },
@@ -351,7 +329,7 @@ class _MyAppState extends State<MyApp> {
                             setState(
                               () {
                                 dropNumber = dropController.text;
-                                insertText(
+                                InsertText().insertText(
                                     '\nDrop $dropNumber \nCustomer\'s unit on level 2',
                                     textController);
                               },
@@ -368,7 +346,7 @@ class _MyAppState extends State<MyApp> {
                             setState(
                               () {
                                 dropNumber = dropController.text;
-                                insertText(
+                                InsertText().insertText(
                                     '\nDrop $dropNumber \nCustomer\'s unit on level 2',
                                     textController);
                               },
@@ -379,29 +357,12 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ],
                   ),
-                )
+                ) */
               ],
             ),
             // Result Tab
-            Container(
-              padding: EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.blue),
-                      borderRadius: BorderRadius.circular(15),
-                    )),
-                    minLines: 10,
-                    maxLines: 10,
-                    controller: textController,
-                    onSubmitted: (_) =>
-                        insertText(textController.text, textController),
-                  ),
-                ],
-              ),
-            ),
+            NotesTab(
+                textController, startDate, startTime, finishDate, finishTime),
           ]),
         ),
       ),
