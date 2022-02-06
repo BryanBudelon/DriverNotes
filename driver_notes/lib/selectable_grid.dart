@@ -39,18 +39,19 @@ class _SelectableGridState extends State<SelectableGrid> {
       appBar: AppBar(
         title: Text('Selection and Settings $optionSelected'),
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        children: <Widget>[
-          for (int i = 0; i < months.length; i++)
-            MonthOption(
-              months[i]['month'] as String,
-              img: months[i]['img'] as String,
-              onTap: () => checkOption(i + 1),
-              selected: i + 1 == optionSelected,
-              key: null,
-            )
-        ],
+      body: Container(
+        width: 300,
+        child: GridView.count(crossAxisCount: 2, children: <Widget>[
+          /*for (int i = 0; i < months.length; i++)
+              MonthOption(
+                months[i]['month'] as String,
+                img: months[i]['img'] as String,
+                onTap: () => checkOption(i + 1),
+                selected: i + 1 == optionSelected,
+                key: null,
+              )
+          ], */
+        ]),
       ),
     );
   }

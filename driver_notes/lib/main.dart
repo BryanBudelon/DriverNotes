@@ -290,12 +290,9 @@ class _MyAppState extends State<MyApp> {
                   keyboardType: TextInputType.number,
                   controller: dropController,
                 ),
-                ElevatedButton(
-                  //onPressed: () => insertText('Drop \n', textController),
-                  onPressed: () => showModalOptions(context),
-                  child: Text('Add Drop'),
+                Expanded(
+                  child: ReasonSelection(),
                 ),
-                Container(child: SelectableGrid(), width: 200, height: 200),
                 /*Container(
                   width: 300,
                   height: 300,
@@ -359,6 +356,11 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                 ) */
+                ElevatedButton(
+                  //onPressed: () => insertText('Drop \n', textController),
+                  onPressed: () => showModalOptions(context),
+                  child: Text('Add Drop'),
+                ),
               ],
             ),
             // Result Tab
