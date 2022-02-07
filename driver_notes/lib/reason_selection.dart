@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import 'options_list.dart';
 
@@ -7,10 +6,10 @@ class ReasonSelection extends StatefulWidget {
   const ReasonSelection({Key? key}) : super(key: key);
 
   @override
-  _ReasonSelectionState createState() => _ReasonSelectionState();
+  ReasonSelectionState createState() => ReasonSelectionState();
 }
 
-class _ReasonSelectionState extends State<ReasonSelection> {
+class ReasonSelectionState extends State<ReasonSelection> {
   int selectedCard = -1;
   int _selectedIndex = -1;
 
@@ -25,6 +24,12 @@ class _ReasonSelectionState extends State<ReasonSelection> {
     OptionsList(5, false, 'label 8'),
     OptionsList(5, false, 'label 9'),
   ];
+
+  List<String> selectedItems = [];
+
+  List<String> returnItems() {
+    return selectedItems;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +61,7 @@ class _ReasonSelectionState extends State<ReasonSelection> {
                   // If this item already is selected: "isSelected": true -> false
                   setState(() {
                     options[index].isSelected = !options[index].isSelected;
+                    selectedItems[index] = options[index].description;
                   });
                 },
                 leading: Text(

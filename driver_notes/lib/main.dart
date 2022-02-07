@@ -358,7 +358,9 @@ class _MyAppState extends State<MyApp> {
                 ) */
                 ElevatedButton(
                   //onPressed: () => insertText('Drop \n', textController),
-                  onPressed: () => showModalOptions(context),
+                  //onPressed: () => showModalOptions(context),
+                  onPressed: () => InsertText(),
+                  // Talvez colocar para adicionar item no TextField ao selecionar o item
                   child: Text('Add Drop'),
                 ),
               ],
