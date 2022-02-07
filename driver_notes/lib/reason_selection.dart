@@ -1,15 +1,21 @@
+import 'package:driver_notes/insert_text.dart';
+import 'package:driver_notes/notes_tab.dart';
 import 'package:flutter/material.dart';
 
 import 'options_list.dart';
 
 class ReasonSelection extends StatefulWidget {
-  const ReasonSelection({Key? key}) : super(key: key);
+  //const ReasonSelection({Key? key, textComtroller}) : super(key: key);
+  final TextEditingController textController;
+  final TextEditingController dropsController;
+
+  ReasonSelection(this.textController, this.dropsController);
 
   @override
-  ReasonSelectionState createState() => ReasonSelectionState();
+  _ReasonSelectionState createState() => _ReasonSelectionState();
 }
 
-class ReasonSelectionState extends State<ReasonSelection> {
+class _ReasonSelectionState extends State<ReasonSelection> {
   int selectedCard = -1;
   int _selectedIndex = -1;
 
@@ -25,20 +31,20 @@ class ReasonSelectionState extends State<ReasonSelection> {
     OptionsList(5, false, 'label 9'),
   ];
 
-  List<String> selectedItems = [];
-
-  List<String> returnItems() {
-    return selectedItems;
-  }
+  var selectedItems = [
+    '',
+    '',
+    '',
+    '',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery.removePadding(
-      context: context,
-      child: GridView.builder(
+    return Column(children: [
+      GridView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
-        itemCount: options.length,
+        itemCount: 6,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: MediaQuery.of(context).size.width /
@@ -102,6 +108,22 @@ class ReasonSelectionState extends State<ReasonSelection> {
               ),
             ); */
       ),
-    );
+      ElevatedButton(
+        //onPressed: () => insertText('Drop \n', textController),
+        //onPressed: () => showModalOptions(context),
+        onPressed: () => {
+          InsertText().insertText(
+              'Drop Number: ' + widget.dropsController.text + '\n',
+              widget.textController),
+          for (var i = 0; i < selectedItems.length; i++)
+            {
+              InsertText()
+                  .insertText(selectedItems[i] + ' + ', widget.textController)
+            }
+        },
+        // Talvez colocar para adicionar item no TextField ao selecionar o item
+        child: Text('Add Drop'),
+      ),
+    ]);
   }
 }

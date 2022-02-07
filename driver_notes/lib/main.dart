@@ -291,7 +291,7 @@ class _MyAppState extends State<MyApp> {
                   controller: dropController,
                 ),
                 Expanded(
-                  child: ReasonSelection(),
+                  child: ReasonSelection(textController, dropController),
                 ),
                 /*Container(
                   width: 300,
@@ -356,13 +356,6 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                 ) */
-                ElevatedButton(
-                  //onPressed: () => insertText('Drop \n', textController),
-                  //onPressed: () => showModalOptions(context),
-                  onPressed: () => InsertText(),
-                  // Talvez colocar para adicionar item no TextField ao selecionar o item
-                  child: Text('Add Drop'),
-                ),
               ],
             ),
             // Result Tab
