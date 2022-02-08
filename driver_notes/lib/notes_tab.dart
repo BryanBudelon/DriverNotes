@@ -54,6 +54,11 @@ class _NotesTabState extends State<NotesTab> {
               borderRadius: BorderRadius.circular(15),
             )),
             minLines: 10,
+            onTap: () {
+              //Prevent issue when remove the text in the field manually.
+              widget._notesText.selection = TextSelection.collapsed(
+                  offset: widget._notesText.text.length);
+            },
             maxLines: 10,
             controller: widget._notesText,
             onSubmitted: (_) => InsertText()

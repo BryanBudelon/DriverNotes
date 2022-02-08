@@ -31,99 +31,115 @@ class _ReasonSelectionState extends State<ReasonSelection> {
     OptionsList(5, false, 'label 9'),
   ];
 
-  var selectedItems = [
-    '',
-    '',
-    '',
-    '',
-  ];
+  var selectedItems = List.filled(10, '');
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      GridView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemCount: 6,
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height / 3),
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-              key: ValueKey(options[index].description),
-              margin: const EdgeInsets.all(10),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+    return Container(
+      width: 400,
+      height: 300,
+      child: Column(children: [
+        GridView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: 6,
+          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 3),
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+                key: ValueKey(options[index].description),
+                margin: const EdgeInsets.all(10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
 
-              // The color depends on this is selected or not
-              color: options[index].isSelected == true
-                  ? Colors.amber
-                  : Colors.white,
-              child: ListTile(
-                onTap: () {
-                  // if this item isn't selected yet, "isSelected": false -> true
-                  // If this item already is selected: "isSelected": true -> false
-                  setState(() {
-                    options[index].isSelected = !options[index].isSelected;
-                    selectedItems[index] = options[index].description;
-                  });
-                },
-                leading: Text(
-                  options[index].description.toString(),
-                  textAlign: TextAlign.center,
-                ),
-                /*title: Text(
-                  options[index].description, 
-                ),*/
-              ));
-        },
+                // The color depends on this is selected or not
+                color: options[index].isSelected == true
+                    ? Colors.amber
+                    : Colors.white,
+                child: ListTile(
+                  onTap: () {
+                    // if this item isn't selected yet, "isSelected": false -> true
+                    // If this item already is selected: "isSelected": true -> false
+                    setState(() {
+                      options[index].isSelected = !options[index].isSelected;
+                      //selectedItems[index] = options[index].description;
+                      selectedItems[index] = options[index].description;
+                    });
+                  },
+                  leading: Text(
+                    options[index].description.toString(),
+                    textAlign: TextAlign.center,
+                  ),
+                  /*title: Text(
+                options[index].description, 
+              ),*/
+                ));
+          },
 
-        /*GestureDetector(
-              onTap: () {
-                setState(() {
-                  // ontap of each card, set the defined int to the grid view index
-                  selectedCard = index;
-                });
-              },
-              onLongPress: () {},
-              child: Card(
-                // check if the index is equal to the selected Card integer
-                color: selectedCard == index ? Colors.blue : Colors.amber,
-                child: Container(
-                  height: 200,
-                  width: 200,
-                  child: Center(
-                    child: Text(
-                      reasons[index],
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+          /*GestureDetector(
+            onTap: () {
+              setState(() {
+                // ontap of each card, set the defined int to the grid view index
+                selectedCard = index;
+              });
+            },
+            onLongPress: () {},
+            child: Card(
+              // check if the index is equal to the selected Card integer
+              color: selectedCard == index ? Colors.blue : Colors.amber,
+              child: Container(
+                height: 200,
+                width: 200,
+                child: Center(
+                  child: Text(
+                    reasons[index],
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ),
-            ); */
-      ),
-      ElevatedButton(
-        //onPressed: () => insertText('Drop \n', textController),
-        //onPressed: () => showModalOptions(context),
-        onPressed: () => {
-          InsertText().insertText(
-              'Drop Number: ' + widget.dropsController.text + '\n',
-              widget.textController),
-          for (var i = 0; i < selectedItems.length; i++)
-            {
-              InsertText()
-                  .insertText(selectedItems[i] + ' + ', widget.textController)
-            }
-        },
-        // Talvez colocar para adicionar item no TextField ao selecionar o item
-        child: Text('Add Drop'),
-      ),
-    ]);
+            ),
+          ); */
+        ),
+        ElevatedButton(
+          //onPressed: () => insertText('Drop \n', textController),
+          //onPressed: () => showModalOptions(context),
+          onPressed: () => {
+            InsertText().insertText(
+                'Drop Number: ' + widget.dropsController.text + '\n',
+                widget.textController),
+            for (var i = 0; i < selectedItems.length; i++)
+              {
+                if (selectedItems[i].isNotEmpty)
+                  if (i == 0)
+                    {
+                      InsertText().insertText(
+                          selectedItems[i] + ' + ', widget.textController),
+                    }
+                  else if (i != selectedItems.length)
+                    {
+                      InsertText().insertText(
+                          selectedItems[i] + ' ', widget.textController)
+                    }
+              },
+            setState(() {
+              for (var i = 0; i < options.length; i++) {
+                options[i].isSelected = false;
+                selectedItems[i] = '';
+              }
+            })
+          },
+          // Talvez colocar para adicionar item no TextField ao selecionar o item
+          child: Text('Add Drop'),
+        ),
+      ]),
+    );
   }
 }
