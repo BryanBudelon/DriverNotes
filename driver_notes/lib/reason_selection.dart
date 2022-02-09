@@ -1,21 +1,19 @@
-import 'package:driver_notes/insert_text.dart';
-import 'package:driver_notes/notes_tab.dart';
 import 'package:flutter/material.dart';
 
+import 'insert_text.dart';
 import 'options_list.dart';
 
 class ReasonSelection extends StatefulWidget {
-  //const ReasonSelection({Key? key, textComtroller}) : super(key: key);
   final TextEditingController textController;
   final TextEditingController dropsController;
 
   ReasonSelection(this.textController, this.dropsController);
 
   @override
-  _ReasonSelectionState createState() => _ReasonSelectionState();
+  ReasonSelectionState createState() => ReasonSelectionState();
 }
 
-class _ReasonSelectionState extends State<ReasonSelection> {
+class ReasonSelectionState extends State<ReasonSelection> {
   int selectedCard = -1;
   int _selectedIndex = -1;
 
@@ -31,31 +29,113 @@ class _ReasonSelectionState extends State<ReasonSelection> {
     OptionsList(5, false, 'label 9'),
   ];
 
-  var selectedItems = List.filled(10, '');
+  List<String> selectedItems = List<String>.filled(10, '', growable: true);
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
+    return Column(children: [
+      SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 8.0),
+          width: 300,
+          height: 300,
+          child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 10,
+              children: [
+                ...options.map((value) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    //alignment: Alignment.center,
+                    child: GestureDetector(
+                      child: Text(value.description),
+                      onTap: () {
+                        setState(() {
+                          value.isSelected = !value.isSelected;
+                          if (value.isSelected == true) {
+                            selectedItems.insert(
+                                value.index, value.description);
+                          } else {
+                            selectedItems.remove(value.description);
+                          }
+                          print(selectedItems);
+                          // selectedItems.forEach((element) {
+                          //   if (element.contains('')) {
+                          //     selectedItems.insert(0, value.description);
+                          //   }
+                          // });
+                        });
+                      },
+                    ),
+                    color:
+                        value.isSelected == true ? Colors.amber : Colors.white,
+                  );
+                }).toList(),
+              ]),
+        ),
+      ),
+      ElevatedButton(
+        //onPressed: () => insertText('Drop \n', textController),
+        //onPressed: () => showModalOptions(context),
+        onPressed: () => {
+          widget.textController.selection = TextSelection.collapsed(
+              offset: widget.textController.text.length),
+          InsertText().insertText(
+              '\nDrop Number: ' + widget.dropsController.text + '\n',
+              widget.textController),
+          for (var i = 0; i < selectedItems.length; i++)
+            {
+              if (selectedItems[i].isNotEmpty)
+                if (i == 0)
+                  {
+                    InsertText().insertText(
+                        selectedItems[i] + ' + ', widget.textController),
+                  }
+                else if (i != selectedItems.length)
+                  {
+                    InsertText().insertText(
+                        selectedItems[i] + ' ', widget.textController)
+                  }
+            },
+          setState(() {
+            for (var i = 0; i < options.length; i++) {
+              options[i].isSelected = false;
+              selectedItems[i] = '';
+            }
+          })
+        },
+        // Talvez colocar para adicionar item no TextField ao selecionar o item
+        child: Text('Add Drop'),
+      ),
+    ]);
+
+    /*GridView.builder(
       //physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      scrollDirection: Axis.vertical,
       itemCount: 6,
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: MediaQuery.of(context).size.width /
-            (MediaQuery.of(context).size.height / 3),
+            (MediaQuery.of(context).size.height / 2),
       ),
       itemBuilder: (BuildContext context, int index) {
         return Card(
-            key: ValueKey(options[index].description),
-            margin: const EdgeInsets.all(10),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          key: ValueKey(options[index].description),
+          margin: const EdgeInsets.all(10),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 
-            // The color depends on this is selected or not
-            color:
-                options[index].isSelected == true ? Colors.amber : Colors.white,
-            child: ListTile(
+          // The color depends on this is selected or not
+          color:
+              options[index].isSelected == true ? Colors.amber : Colors.white,
+          child: Flex(direction: Axis.vertical, children: [
+            ListTile(
+              leading: Text(
+                options[index].description.toString(),
+                textAlign: TextAlign.center,
+              ),
               onTap: () {
                 // if this item isn't selected yet, "isSelected": false -> true
                 // If this item already is selected: "isSelected": true -> false
@@ -65,46 +145,13 @@ class _ReasonSelectionState extends State<ReasonSelection> {
                   selectedItems[index] = options[index].description;
                 });
               },
-              leading: Container(
-                width: 100,
-                child: Text(
-                  options[index].description.toString(),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              /*title: Text(
-            options[index].description, 
-                        ),*/
-            ));
-      },
-
-      /*GestureDetector(
-        onTap: () {
-          setState(() {
-            // ontap of each card, set the defined int to the grid view index
-            selectedCard = index;
-          });
-        },
-        onLongPress: () {},
-        child: Card(
-          // check if the index is equal to the selected Card integer
-          color: selectedCard == index ? Colors.blue : Colors.amber,
-          child: Container(
-            height: 200,
-            width: 200,
-            child: Center(
-              child: Text(
-                reasons[index],
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
             ),
-          ),
-        ),
-      ); */
-    );
+          ]),
+          /*title: Text(
+          options[index].description, 
+                      ),*/
+        );
+      },
+    ); */
   }
 }

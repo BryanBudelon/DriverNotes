@@ -290,9 +290,8 @@ class _MyAppState extends State<MyApp> {
                   keyboardType: TextInputType.number,
                   controller: dropController,
                 ),
-                Flex(
-                  direction: Axis.vertical,
-                  children: [ReasonSelection(textController, dropController)],
+                Expanded(
+                  child: ReasonSelection(textController, dropController),
                 ),
                 /*Container(
                   width: 300,
