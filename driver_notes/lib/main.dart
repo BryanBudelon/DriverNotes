@@ -245,125 +245,119 @@ class _MyAppState extends State<MyApp> {
           ),
           body: TabBarView(children: [
             // Action Tab
-            SizedBox(
-              width: 400,
-              height: 400,
-              child: Column(
-                children: [
-                  Row(children: [
-                    Container(
-                      child: SizedBox(
-                        width: 150,
-                        child: TextField(
-                          decoration:
-                              InputDecoration(labelText: 'Starting Date'),
-                          controller: startDate,
-                          onTap: _startDatePicker,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
+            Column(
+              children: [
+                Row(children: [
+                  Container(
+                    child: SizedBox(
                       width: 150,
                       child: TextField(
-                        decoration: InputDecoration(labelText: 'Starting Time'),
-                        controller: startTime,
-                        onTap: _startTimePicker,
+                        decoration: InputDecoration(labelText: 'Starting Date'),
+                        controller: startDate,
+                        onTap: _startDatePicker,
                       ),
                     ),
-                  ]),
-                  Row(children: [
-                    SizedBox(
-                      width: 150,
-                      child: TextField(
-                        decoration: InputDecoration(labelText: 'Finising Date'),
-                        controller: finishDate,
-                        onTap: _finishDatePicker,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 150,
-                      child: TextField(
-                        decoration: InputDecoration(labelText: 'Finising Time'),
-                        controller: finishTime,
-                        onTap: _finishTimePicker,
-                      ),
-                    ),
-                  ]),
-                  TextField(
-                    decoration: InputDecoration(labelText: 'Drop Number'),
-                    keyboardType: TextInputType.number,
-                    controller: dropController,
                   ),
                   SizedBox(
-                    child: ReasonSelection(textController, dropController),
-                    //height: 400,
-                    //width: 400,
-                  ),
-                  /*Container(
-                    width: 300,
-                    height: 300,
-                    child: GridView.count(
-                      crossAxisCount: 1,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 10,
-                      children: [
-                        ReasonSelection(),
-                        /*Container(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            child: Text('No parking spot nearby'),
-                            onTap: () {
-                              setState(
-                                () {
-                                  dropNumber = dropController.text;
-                                  InsertText().insertText(
-                                      '\nDrop $dropNumber \nNo parking spot nearby',
-                                      textController);
-                                },
-                              );
-                            },
-                          ),
-                          color: Colors.teal[100],
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            child: Text('Customer\'s unit on level 2'),
-                            onTap: () {
-                              setState(
-                                () {
-                                  dropNumber = dropController.text;
-                                  InsertText().insertText(
-                                      '\nDrop $dropNumber \nCustomer\'s unit on level 2',
-                                      textController);
-                                },
-                              );
-                            },
-                          ),
-                          color: Colors.teal[100],
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            child: Text('Customer\'s unit on level 2'),
-                            onTap: () {
-                              setState(
-                                () {
-                                  dropNumber = dropController.text;
-                                  InsertText().insertText(
-                                      '\nDrop $dropNumber \nCustomer\'s unit on level 2',
-                                      textController);
-                                },
-                              );
-                            },
-                          ),
-                          color: Colors.teal[100],
-                        ), */
-                      ],
+                    width: 150,
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Starting Time'),
+                      controller: startTime,
+                      onTap: _startTimePicker,
                     ),
-                  ) */
-                ],
-              ),
+                  ),
+                ]),
+                Row(children: [
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Finising Date'),
+                      controller: finishDate,
+                      onTap: _finishDatePicker,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Finising Time'),
+                      controller: finishTime,
+                      onTap: _finishTimePicker,
+                    ),
+                  ),
+                ]),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Drop Number'),
+                  keyboardType: TextInputType.number,
+                  controller: dropController,
+                ),
+                Flex(
+                  direction: Axis.vertical,
+                  children: [ReasonSelection(textController, dropController)],
+                ),
+                /*Container(
+                  width: 300,
+                  height: 300,
+                  child: GridView.count(
+                    crossAxisCount: 1,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 10,
+                    children: [
+                      ReasonSelection(),
+                      /*Container(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          child: Text('No parking spot nearby'),
+                          onTap: () {
+                            setState(
+                              () {
+                                dropNumber = dropController.text;
+                                InsertText().insertText(
+                                    '\nDrop $dropNumber \nNo parking spot nearby',
+                                    textController);
+                              },
+                            );
+                          },
+                        ),
+                        color: Colors.teal[100],
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          child: Text('Customer\'s unit on level 2'),
+                          onTap: () {
+                            setState(
+                              () {
+                                dropNumber = dropController.text;
+                                InsertText().insertText(
+                                    '\nDrop $dropNumber \nCustomer\'s unit on level 2',
+                                    textController);
+                              },
+                            );
+                          },
+                        ),
+                        color: Colors.teal[100],
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          child: Text('Customer\'s unit on level 2'),
+                          onTap: () {
+                            setState(
+                              () {
+                                dropNumber = dropController.text;
+                                InsertText().insertText(
+                                    '\nDrop $dropNumber \nCustomer\'s unit on level 2',
+                                    textController);
+                              },
+                            );
+                          },
+                        ),
+                        color: Colors.teal[100],
+                      ), */
+                    ],
+                  ),
+                ) */
+              ],
             ),
             // Result Tab
             NotesTab(
