@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:driver_notes/notes_tab.dart';
-import 'package:driver_notes/selectable_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -249,8 +248,9 @@ class _MyAppState extends State<MyApp> {
               children: [
                 Row(children: [
                   Container(
+                    padding: EdgeInsets.only(left: 50.0),
                     child: SizedBox(
-                      width: 150,
+                      width: 120,
                       child: TextField(
                         decoration: InputDecoration(labelText: 'Starting Date'),
                         controller: startDate,
@@ -268,12 +268,15 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ]),
                 Row(children: [
-                  SizedBox(
-                    width: 150,
-                    child: TextField(
-                      decoration: InputDecoration(labelText: 'Finising Date'),
-                      controller: finishDate,
-                      onTap: _finishDatePicker,
+                  Container(
+                    padding: EdgeInsets.only(left: 50.0),
+                    child: SizedBox(
+                      width: 120,
+                      child: TextField(
+                        decoration: InputDecoration(labelText: 'Finising Date'),
+                        controller: finishDate,
+                        onTap: _finishDatePicker,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -285,13 +288,54 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 ]),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Drop Number'),
-                  keyboardType: TextInputType.number,
-                  controller: dropController,
+                Container(
+                  width: 300,
+                  padding: EdgeInsets.only(left: 50.0),
+                  margin: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width * 0.25),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Drop Number',
+                        suffixIcon: Container(
+                          width: MediaQuery.of(context).size.width * 0.30,
+                          child: Row(children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.add,
+                              ),
+                              onPressed: () {
+                                var value = int.parse(dropController.text);
+                                dropController.text = (value + 1).toString();
+                                if (dropController.text.isNotEmpty) {
+                                  value += 1;
+                                  dropController.text = value.toString();
+                                } else {
+                                  String newText = (0 + 1).toString();
+                                  dropController.value = TextEditingValue(
+                                      text: newText,
+                                      selection: TextSelection.fromPosition(
+                                          TextPosition(
+                                              offset:
+                                                  dropController.text.length)));
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                var value = int.parse(dropController.text);
+                                dropController.text = (value - 1).toString();
+                              },
+                            ),
+                          ]),
+                        )),
+                    keyboardType: TextInputType.number,
+                    controller: dropController,
+                  ),
                 ),
                 Expanded(
-                  child: ReasonSelection(textController, dropController),
+                  child: SingleChildScrollView(
+                      child: ReasonSelection(textController, dropController)),
                 ),
                 /*Container(
                   width: 300,

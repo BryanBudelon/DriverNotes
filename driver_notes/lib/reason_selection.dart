@@ -20,13 +20,13 @@ class ReasonSelectionState extends State<ReasonSelection> {
   List<OptionsList> options = [
     OptionsList(0, false, 'No parking spot'),
     OptionsList(1, false, 'More Than 5 Totes'),
-    OptionsList(2, false, 'label 3'),
-    OptionsList(3, false, 'label 4'),
-    OptionsList(4, false, 'label 5'),
-    OptionsList(5, false, 'label 6'),
-    OptionsList(5, false, 'label 7'),
-    OptionsList(5, false, 'label 8'),
-    OptionsList(5, false, 'label 9'),
+    OptionsList(2, false, 'Customer\'s Unit on Level'),
+    OptionsList(3, false, 'Many Stairs'),
+    OptionsList(4, false, 'Poor Instructions'),
+    OptionsList(5, false, 'Need to call Cust. Service'),
+    OptionsList(5, false, 'Parked truck ... away'),
+    OptionsList(5, false, 'Challenging weather'),
+    OptionsList(5, false, 'Slippery Ramp'),
   ];
 
   List<String> selectedItems = List<String>.filled(10, '', growable: true);
@@ -38,7 +38,7 @@ class ReasonSelectionState extends State<ReasonSelection> {
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 8.0),
           width: 300,
-          height: 300,
+          height: 400,
           child: GridView.count(
               crossAxisCount: 3,
               crossAxisSpacing: 5,
@@ -50,7 +50,11 @@ class ReasonSelectionState extends State<ReasonSelection> {
                         borderRadius: BorderRadius.circular(10)),
                     //alignment: Alignment.center,
                     child: GestureDetector(
-                      child: Text(value.description),
+                      child: Center(
+                          child: Text(
+                        value.description,
+                        textAlign: TextAlign.center,
+                      )),
                       onTap: () {
                         setState(() {
                           value.isSelected = !value.isSelected;
@@ -96,7 +100,7 @@ class ReasonSelectionState extends State<ReasonSelection> {
                 else if (i != selectedItems.length)
                   {
                     InsertText().insertText(
-                        selectedItems[i] + ' ', widget.textController)
+                        selectedItems[i] + ' + ', widget.textController)
                   }
             },
           setState(() {
