@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'insert_text.dart';
@@ -17,145 +18,157 @@ class ReasonSelectionState extends State<ReasonSelection> {
   int selectedCard = -1;
   int _selectedIndex = -1;
 
+  TextEditingController totesQtd = TextEditingController();
+
   List<OptionsList> options = [
     OptionsList(0, false, 'No parking spot'),
     OptionsList(1, false, 'More Than 5 Totes'),
     OptionsList(2, false, 'Customer\'s Unit on Level'),
     OptionsList(3, false, 'Many Stairs'),
     OptionsList(4, false, 'Poor Instructions'),
-    OptionsList(5, false, 'Need to call Cust. Service'),
-    OptionsList(5, false, 'Parked truck ... away'),
-    OptionsList(5, false, 'Challenging weather'),
-    OptionsList(5, false, 'Slippery Ramp'),
+    OptionsList(5, false, 'Customer not home. Called C. Service.'),
+    OptionsList(6, false, 'Parked truck ... away'),
+    OptionsList(7, false, 'Challenging weather'),
+    OptionsList(8, false, 'Slippery Ramp'),
+    OptionsList(9, false, 'Long Driveway'),
   ];
 
-  List<String> selectedItems = List<String>.filled(10, '', growable: true);
+  List<String> selectedItems = [];
+
+  var numberQtdTotes = List.generate(100, (index) => index);
+
+  void _showToteQuantity(BuildContext ctx, int position) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          onTap: () {},
+          child: Card(
+              child: Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: Text(
+                          'How many totes?',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 15),
+                        height: 100,
+                        child: CupertinoPicker(
+                            itemExtent: 20,
+                            onSelectedItemChanged: (value) {},
+                            children: [
+                              for (var i in numberQtdTotes) Text(i.toString())
+                            ]),
+                      )
+                      /*TextField(
+                        controller: totesQtd,
+                        keyboardType: TextInputType.number,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          selectedItems.add(totesQtd.text + ' Totes');
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(child: Text('Save')),
+                      ) */
+                    ],
+                  ),
+                  height: 200)),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 8.0),
-          width: 300,
-          height: 400,
-          child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 10,
-              children: [
-                ...options.map((value) {
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    //alignment: Alignment.center,
-                    child: GestureDetector(
-                      child: Center(
+    return Column(
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 7.0),
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: GridView.count(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                crossAxisCount: 3,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 10,
+                children: [
+                  ...options.map((value) {
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: GestureDetector(
+                        child: Center(
                           child: Text(
-                        value.description,
-                        textAlign: TextAlign.center,
-                      )),
-                      onTap: () {
-                        setState(() {
-                          value.isSelected = !value.isSelected;
-                          if (value.isSelected == true) {
-                            selectedItems.insert(
-                                value.index, value.description);
-                          } else {
-                            selectedItems.remove(value.description);
-                          }
-                          print(selectedItems);
-                          // selectedItems.forEach((element) {
-                          //   if (element.contains('')) {
-                          //     selectedItems.insert(0, value.description);
-                          //   }
-                          // });
-                        });
-                      },
-                    ),
-                    color:
-                        value.isSelected == true ? Colors.amber : Colors.white,
-                  );
-                }).toList(),
-              ]),
+                            value.description,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            value.isSelected = !value.isSelected;
+                            if (value.isSelected == true) {
+                              if (value.index == 1) {
+                                _showToteQuantity(context, value.index);
+                              } else {
+                                selectedItems.add(value.description);
+                              }
+                            } else {
+                              selectedItems.remove(value.description);
+                            }
+                            print(selectedItems);
+                          });
+                        },
+                      ),
+                      color: value.isSelected == true
+                          ? Colors.amber
+                          : Colors.white,
+                    );
+                  }).toList(),
+                ]),
+          ),
         ),
-      ),
-      ElevatedButton(
-        //onPressed: () => insertText('Drop \n', textController),
-        //onPressed: () => showModalOptions(context),
-        onPressed: () => {
-          widget.textController.selection = TextSelection.collapsed(
-              offset: widget.textController.text.length),
-          InsertText().insertText(
-              '\nDrop Number: ' + widget.dropsController.text + '\n',
-              widget.textController),
-          for (var i = 0; i < selectedItems.length; i++)
-            {
-              if (selectedItems[i].isNotEmpty)
-                if (i == 0)
-                  {
-                    InsertText().insertText(
-                        selectedItems[i] + ' + ', widget.textController),
-                  }
-                else if (i != selectedItems.length)
-                  {
-                    InsertText().insertText(
-                        selectedItems[i] + ' + ', widget.textController)
-                  }
-            },
-          setState(() {
-            for (var i = 0; i < options.length; i++) {
-              options[i].isSelected = false;
-              selectedItems[i] = '';
-            }
-          })
-        },
-        // Talvez colocar para adicionar item no TextField ao selecionar o item
-        child: Text('Add Drop'),
-      ),
-    ]);
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.green.shade900)),
+          onPressed: () => {
+            //Get the cursor position
+            widget.textController.selection = TextSelection.collapsed(
+                offset: widget.textController.text.length),
 
-    /*GridView.builder(
-      //physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: 6,
-      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: MediaQuery.of(context).size.width /
-            (MediaQuery.of(context).size.height / 2),
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        return Card(
-          key: ValueKey(options[index].description),
-          margin: const EdgeInsets.all(10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            //Add Drop Number
+            InsertText().insertText(
+                '\n\nDrop Number: ' + widget.dropsController.text + '\n',
+                widget.textController),
 
-          // The color depends on this is selected or not
-          color:
-              options[index].isSelected == true ? Colors.amber : Colors.white,
-          child: Flex(direction: Axis.vertical, children: [
-            ListTile(
-              leading: Text(
-                options[index].description.toString(),
-                textAlign: TextAlign.center,
-              ),
-              onTap: () {
-                // if this item isn't selected yet, "isSelected": false -> true
-                // If this item already is selected: "isSelected": true -> false
-                setState(() {
-                  options[index].isSelected = !options[index].isSelected;
-                  //selectedItems[index] = options[index].description;
-                  selectedItems[index] = options[index].description;
-                });
+            //Check and write all selected items
+            for (var i = 0; i < selectedItems.length; i++)
+              {
+                InsertText().insertText(
+                    '\n\t• ' + selectedItems[i] + '', widget.textController)
               },
-            ),
-          ]),
-          /*title: Text(
-          options[index].description, 
-                      ),*/
-        );
-      },
-    ); */
+            //Set to false selected items and the list with selected items.
+            setState(() {
+              for (var i = 0; i < options.length; i++) {
+                options[i].isSelected = false;
+              }
+              selectedItems.removeRange(0, selectedItems.length);
+            })
+          },
+          child: Text('Add Drop'),
+        ),
+      ],
+    );
   }
 }
