@@ -1,16 +1,19 @@
-# driver_notes
+# Drivers Notes
 
-A new Flutter project.
+I have added some screens to show how is the app running.
 
-## Getting Started
+Home Screen:
 
-This project is a starting point for a Flutter application.
+![Screenshot_1660195020](https://user-images.githubusercontent.com/5804314/184069869-db9107af-a5b3-4d3a-8e83-ced69307f594.png)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Notes Tab Screen:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Screenshot_1660195030](https://user-images.githubusercontent.com/5804314/184069849-23720b9e-8f0a-4ebd-a92d-1dd595ff997d.png)
+
+
+
+After press Copy button, this is the result as formatted text:
+
+
+![184069501-68494044-77f8-4ff7-a371-b2a8d4d8ba54](https://user-images.githubusercontent.com/5804314/184069861-5bc0116b-17f8-46ce-a124-fbd85913857b.png)
