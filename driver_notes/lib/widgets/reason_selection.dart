@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'insert_text.dart';
-import 'options_list.dart';
+import '../models/options_list.dart';
 
 class ReasonSelection extends StatefulWidget {
   final TextEditingController textController;
